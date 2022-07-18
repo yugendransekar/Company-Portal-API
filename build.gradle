@@ -14,9 +14,7 @@ repositories {
 
 jar {
 	manifest {
-		attributes(
-				'CompanyPortalApplication': 'com.startup.companyportal'
-		)
+		attributes 'CompanyPortalApplication': 'com.startup.companyportal'
 	}
 }
 
