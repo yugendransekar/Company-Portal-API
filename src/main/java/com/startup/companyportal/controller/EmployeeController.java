@@ -41,10 +41,10 @@ public class EmployeeController {
     }
 
     @PutMapping("/employees/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "email") String email,
                                                    @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
-        Employee employee = employeeRepo.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        Employee employee = employeeRepo.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + email));
 
         employee.setEmail(employeeDetails.getEmail());
         employee.setLastName(employeeDetails.getLastName());
@@ -54,10 +54,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
-    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "email") String email)
             throws ResourceNotFoundException {
-        Employee employee = employeeRepo.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        Employee employee = employeeRepo.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + email));
 
         employeeRepo.delete(employee);
         Map<String, Boolean> response = new HashMap<>();
@@ -67,8 +67,8 @@ public class EmployeeController {
 
     @GetMapping("/login")
     public Map<String, Boolean> loginEmployee(@RequestBody EmployeeLogin eLogin) throws ResourceNotFoundException{
-        Employee employee = employeeRepo.findById(eLogin.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + eLogin.getId()));
+        Employee employee = employeeRepo.findById(eLogin.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + eLogin.getEmail()));
         Map<String, Boolean> response = new HashMap<>();
         if(eLogin.getPassword().equals(employee.getPassword())) {
             response.put("authorized",Boolean.TRUE);
