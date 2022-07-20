@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     //Get Employee with ID
-    @GetMapping("/employees/{id}")
+    @GetMapping("/employees/{email}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "email") String email)
             throws ResourceNotFoundException {
         Employee employee = employeeRepo.findById(email)
@@ -40,7 +40,7 @@ public class EmployeeController {
         return employeeRepo.save(employee);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/employees/{email}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "email") String email,
                                                    @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
         Employee employee = employeeRepo.findById(email)
@@ -53,7 +53,7 @@ public class EmployeeController {
         return ResponseEntity.ok(updatedEmployee);
     }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/employees/{email}")
     public Map<String, Boolean> deleteEmployee(@PathVariable(value = "email") String email)
             throws ResourceNotFoundException {
         Employee employee = employeeRepo.findById(email)
