@@ -2,6 +2,7 @@ package com.startup.companyportal.controller;
 
 import com.startup.companyportal.exception.ResourceNotFoundException;
 import com.startup.companyportal.model.Employee;
+import com.startup.companyportal.model.EmployeeLogin;
 import com.startup.companyportal.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,19 @@ public class EmployeeController {
         employeeRepo.delete(employee);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+
+    @GetMapping("/login")
+    public Map<String, Boolean> loginEmployee(@RequestBody EmployeeLogin eLogin) throws ResourceNotFoundException{
+        Employee employee = employeeRepo.findById(eLogin.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + eLogin.getId()));
+        Map<String, Boolean> response = new HashMap<>();
+        if(eLogin.getPassword().equals(employee.getPassword())) {
+            response.put("authorized",Boolean.TRUE);
+        } else {
+            response.put("authorized",Boolean.FALSE);
+        }
         return response;
     }
 }
