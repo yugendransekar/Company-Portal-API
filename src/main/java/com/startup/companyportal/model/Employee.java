@@ -25,7 +25,6 @@ public class Employee {
         this.password = password;
     }
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
@@ -53,6 +52,7 @@ public class Employee {
         this.lastName = lastName;
     }
 
+    @Id
     @Column(name="email")
     public String getEmail() {
         return email;

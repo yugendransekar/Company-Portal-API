@@ -27,10 +27,10 @@ public class EmployeeController {
 
     //Get Employee with ID
     @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId)
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "email") String email)
             throws ResourceNotFoundException {
-        Employee employee = employeeRepo.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        Employee employee = employeeRepo.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + email));
         return ResponseEntity.ok().body(employee);
     }
 
