@@ -1,10 +1,12 @@
 package com.startup.companyportal.controller;
 
+import com.startup.companyportal.exception.AccessForbiddenException;
 import com.startup.companyportal.exception.ResourceNotFoundException;
 import com.startup.companyportal.model.Employee;
 import com.startup.companyportal.model.EmployeeLogin;
 import com.startup.companyportal.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,15 +68,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/login")
-    public Map<String, Boolean> loginEmployee(@RequestBody EmployeeLogin eLogin) throws ResourceNotFoundException{
+    public ResponseEntity<Employee> loginEmployee(@RequestBody EmployeeLogin eLogin) throws ResourceNotFoundException,AccessForbiddenException{
         Employee employee = employeeRepo.findById(eLogin.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + eLogin.getEmail()));
         Map<String, Boolean> response = new HashMap<>();
         if(eLogin.getPassword().equals(employee.getPassword())) {
-            response.put("authorized",Boolean.TRUE);
+            return ResponseEntity.ok(employee);
         } else {
-            response.put("authorized",Boolean.FALSE);
+            throw  new AccessForbiddenException("Employee Password is incorrect");
         }
-        return response;
     }
 }
